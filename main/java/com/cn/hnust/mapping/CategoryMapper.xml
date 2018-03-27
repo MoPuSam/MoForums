@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hnust.dao.ICategoryDao" >
+  <resultMap id="CategoryMap" type="com.cn.hnust.pojo.Category" >
+    <id column="gc_id" property="gcId" jdbcType="INTEGER" />
+    <result column="gc_name" property="gcName" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="VARCHAR" />
+    <collection property="pategoryList" column="gc_id" ofType="com.cn.hnust.pojo.Pategory" select="com.cn.hnust.dao.IPategoryDao.getPateList"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    gc_id, gc_name, addtime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="CategoryMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from gf_categories
+    where gc_id = #{gcId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from gf_categories
+    where gc_id = #{gcId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.hnust.pojo.Category" >
+    insert into gf_categories (gc_id, gc_name, addtime
+      )
+    values (#{gcId,jdbcType=INTEGER}, #{gcName,jdbcType=VARCHAR}, #{addtime,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.hnust.pojo.Category" >
+    insert into gf_categories
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="gcId != null" >
+        gc_id,
+      </if>
+      <if test="gcName != null" >
+        gc_name,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="gcId != null" >
+        #{gcId,jdbcType=INTEGER},
+      </if>
+      <if test="gcName != null" >
+        #{gcName,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        #{addtime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.hnust.pojo.Category" >
+    update gf_categories
+    <set >
+      <if test="gcName != null" >
+        gc_name = #{gcName,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where gc_id = #{gcId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.hnust.pojo.Category" >
+    update gf_categories
+    set gc_name = #{gcName,jdbcType=VARCHAR},
+      addtime = #{addtime,jdbcType=VARCHAR}
+    where gc_id = #{gcId,jdbcType=INTEGER}
+  </update>
+  <select id="getCatList" resultMap="CategoryMap">
+    select
+    <include refid="Base_Column_List" />
+    from gf_categories
+  </select>
+  <select id="getSelectCatList" resultMap="CategoryMap">
+    select
+    <include refid="Base_Column_List" />
+    from gf_categories
+    WHERE gc_id != 0;
+  </select>
+</mapper>

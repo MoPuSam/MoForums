@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hnust.dao.IPostDao" >
+  <resultMap id="PostMap" type="com.cn.hnust.pojo.Post" >
+    <id column="p_id" property="pId" jdbcType="INTEGER" />
+    <result column="p_uid" property="pUid" jdbcType="INTEGER" />
+    <result column="p_title" property="pTitle" jdbcType="VARCHAR" />
+    <result column="p_content" property="pContent" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="VARCHAR" />
+    <result column="tags" property="tags" jdbcType="VARCHAR" />
+    <result column="category" property="category" jdbcType="INTEGER" />
+    <result column="ishot" property="ishot" jdbcType="INTEGER" />
+    <result column="istop" property="istop" jdbcType="INTEGER" />
+    <result column="Isgood" property="isgood" jdbcType="INTEGER" />
+    <result column="hits" property="hits" jdbcType="INTEGER" />
+    <result column="ispass" property="ispass" jdbcType="INTEGER" />
+    <association property="pUser" column="p_uid" select="com.cn.hnust.dao.IUserDao.selectByPrimaryKey"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    p_id, p_uid, p_title, p_content, update_time, tags, category, ishot, istop, Isgood, 
+    hits, ispass
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="PostMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from gf_posts
+    where p_id = #{pId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from gf_posts
+    where p_id = #{pId,jdbcType=INTEGER}
+  </delete>
+  <!-- useGeneratedKeys="true" keyProperty="p_id"返回自动生成主键输入到类中 -->
+  <insert id="insert" parameterType="com.cn.hnust.pojo.Post" useGeneratedKeys="true" keyProperty="pId" >
+    insert into gf_posts (p_id, p_uid, p_title, 
+      p_content, update_time, tags, 
+      category, ishot, istop, 
+      Isgood, hits, ispass
+      )
+    values (#{pId,jdbcType=INTEGER}, #{pUid,jdbcType=INTEGER}, #{pTitle,jdbcType=VARCHAR},
+      #{pContent,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, #{tags,jdbcType=VARCHAR}, 
+      #{category,jdbcType=INTEGER}, #{ishot,jdbcType=INTEGER}, #{istop,jdbcType=INTEGER},
+      #{isgood,jdbcType=INTEGER}, #{hits,jdbcType=INTEGER}, #{ispass,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.hnust.pojo.Post" >
+    insert into gf_posts
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pId != null" >
+        p_id,
+      </if>
+      <if test="pUid != null" >
+        p_uid,
+      </if>
+      <if test="pTitle != null" >
+        p_title,
+      </if>
+      <if test="pContent != null" >
+        p_content,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="tags != null" >
+        tags,
+      </if>
+      <if test="category != null" >
+        category,
+      </if>
+      <if test="ishot != null" >
+        ishot,
+      </if>
+      <if test="istop != null" >
+        istop,
+      </if>
+      <if test="isgood != null" >
+        Isgood,
+      </if>
+      <if test="hits != null" >
+        hits,
+      </if>
+      <if test="ispass != null" >
+        ispass,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pId != null" >
+        #{pId,jdbcType=INTEGER},
+      </if>
+      <if test="pUid != null" >
+        #{pUid,jdbcType=INTEGER},
+      </if>
+      <if test="pTitle != null" >
+        #{pTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="pContent != null" >
+        #{pContent,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="tags != null" >
+        #{tags,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=INTEGER},
+      </if>
+      <if test="ishot != null" >
+        #{ishot,jdbcType=INTEGER},
+      </if>
+      <if test="istop != null" >
+        #{istop,jdbcType=INTEGER},
+      </if>
+      <if test="isgood != null" >
+        #{isgood,jdbcType=INTEGER},
+      </if>
+      <if test="hits != null" >
+        #{hits,jdbcType=INTEGER},
+      </if>
+      <if test="ispass != null" >
+        #{ispass,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.hnust.pojo.Post" >
+    update gf_posts
+    <set >
+      <if test="pUid != null" >
+        p_uid = #{pUid,jdbcType=INTEGER},
+      </if>
+      <if test="pTitle != null" >
+        p_title = #{pTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="pContent != null" >
+        p_content = #{pContent,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="tags != null" >
+        tags = #{tags,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null" >
+        category = #{category,jdbcType=INTEGER},
+      </if>
+      <if test="ishot != null" >
+        ishot = #{ishot,jdbcType=INTEGER},
+      </if>
+      <if test="istop != null" >
+        istop = #{istop,jdbcType=INTEGER},
+      </if>
+      <if test="isgood != null" >
+        Isgood = #{isgood,jdbcType=INTEGER},
+      </if>
+      <if test="hits != null" >
+        hits = #{hits,jdbcType=INTEGER},
+      </if>
+      <if test="ispass != null" >
+        ispass = #{ispass,jdbcType=INTEGER},
+      </if>
+    </set>
+    where p_id = #{pId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.hnust.pojo.Post" >
+    update gf_posts
+    set p_uid = #{pUid,jdbcType=INTEGER},
+      p_title = #{pTitle,jdbcType=VARCHAR},
+      p_content = #{pContent,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=VARCHAR},
+      tags = #{tags,jdbcType=VARCHAR},
+      category = #{category,jdbcType=INTEGER},
+      ishot = #{ishot,jdbcType=INTEGER},
+      istop = #{istop,jdbcType=INTEGER},
+      Isgood = #{isgood,jdbcType=INTEGER},
+      hits = #{hits,jdbcType=INTEGER},
+      ispass = #{ispass,jdbcType=INTEGER}
+    where p_id = #{pId,jdbcType=INTEGER}
+  </update>
+  <select id="getAllPost" resultMap="PostMap" >
+    select
+    <include refid="Base_Column_List" />
+    from gf_posts
+    ORDER BY STR_TO_DATE(update_time,"%Y-%m-%d %H:%i:%s") desc
+  </select>
+  <select id="getNoticeList" resultMap="PostMap" >
+    select
+    <include refid="Base_Column_List" />
+    from gf_posts
+    where istop = 2
+  </select>
+  <select id="getHotList" resultMap="PostMap" >
+    select
+    <include refid="Base_Column_List" />
+    from gf_posts
+    where istop is null
+    ORDER BY hits desc
+  </select>
+  <select id="getPostCountByUid" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    select count(p_id) num
+    from gf_posts
+    where p_uid = #{0}
+    group by p_uid
+  </select>
+  <!--<update id="updateHitBatch" parameterType="java.util.List">
+    update gf_posts
+    set
+    hits = hits+1
+    where p_id IN
+    <foreach collection="list" index="index" item="item"
+             separator="," open="(" close=")">
+      #{item.pId,jdbcType=INTEGER}
+    </foreach>
+  </update>-->
+  <update id="updateHit" parameterType="java.lang.Integer">
+    update gf_posts
+    set
+    hits = hits+1
+    where p_id = #{0}
+  </update>
+</mapper>

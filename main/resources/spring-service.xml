@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context-3.1.xsd
+                        http://www.springframework.org/schema/mvc
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+						http://www.springframework.org/schema/util
+						http://www.springframework.org/schema/util/spring-util-3.0.xsd
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!-- 扫描 aop-->
+    <context:component-scan base-package="com.cn.hnust.aop" />
+    <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+    <!-- 读取文件路径配置文件-->
+    <util:properties id="filepath" location="classpath:config.properties"></util:properties>
+    <util:properties id="espath" location="classpath:elasticsearch.properties"></util:properties>
+    <!--文件传输服务-->
+    <bean id="filesService" class="com.cn.hnust.service.impl.FileServiceImpl" init-method="init">
+        <property name="rootPath" value="#{filepath['rootPath']}"/>
+        <property name="articlePath" value="#{filepath['articlePath']}"/>
+        <property name="localFilePath" value="#{filepath['localFilePath']}"/>
+    </bean>
+    <!--用户账号服务-->
+    <bean id="userService" class="com.cn.hnust.service.impl.UserServiceImpl"></bean>
+    <!--文章服务-->
+    <bean id="postService" class="com.cn.hnust.service.impl.PostServiceImpl"></bean>
+    <!--回复服务-->
+    <bean id="replyService" class="com.cn.hnust.service.impl.ReplyServiceImpl"></bean>
+    <!--分区服务-->
+    <bean id="categoryService" class="com.cn.hnust.service.impl.CategoryServiceImpl"></bean>
+    <!--分类服务-->
+    <bean id="pategoryService" class="com.cn.hnust.service.impl.PategoryServiceImpl"></bean>
+    <!--标签服务-->
+    <bean id="tagService" class="com.cn.hnust.service.impl.TagServiceImpl"></bean>
+    <!--索引服务-->
+    <bean id="indexService" class="com.cn.hnust.service.impl.IndexServiceImpl">
+        <property name="HOST" value="#{espath['url']}"/>
+        <property name="PORT" value="#{espath['port']}"/>
+    </bean>
+    <!--索引服务-->
+    <!--<bean id="esService" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="com.cn.hnust.util.ElasticService.getElasticClient"/>
+        <property name="HOST" value="#{espath['url']}"/>
+        <property name="PORT" value="#{espath['port']}"/>
+    </bean>-->
+    <!--爬虫服务-->
+    <bean id="crawService" class="com.cn.hnust.service.impl.CrawlerServiceImpl"></bean>
+</beans>

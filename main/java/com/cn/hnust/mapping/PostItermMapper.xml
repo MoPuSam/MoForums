@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hnust.dao.IPostItermDao" >
+  <resultMap id="ItermMap" type="com.cn.hnust.pojo.PostIterm" >
+    <result column="p_id" property="pId" jdbcType="INTEGER" />
+    <result column="p_title" property="pTitle" jdbcType="VARCHAR" />
+    <result column="u_nickname" property="uNickname" jdbcType="VARCHAR" />
+    <result column="photo" property="photo" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="VARCHAR" />
+    <result column="r_count" property="rCount" jdbcType="BIGINT" />
+    <result column="category" property="category" jdbcType="INTEGER" />
+  </resultMap>
+  <insert id="insert" parameterType="com.cn.hnust.pojo.PostIterm" >
+    insert into gf_post_iterm (p_id, p_title, u_nickname, 
+      photo, update_time, r_count, 
+      category)
+    values (#{pId,jdbcType=INTEGER}, #{pTitle,jdbcType=VARCHAR}, #{uNickname,jdbcType=VARCHAR}, 
+      #{photo,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, #{rCount,jdbcType=BIGINT}, 
+      #{category,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.hnust.pojo.PostIterm" >
+    insert into gf_post_iterm
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pId != null" >
+        p_id,
+      </if>
+      <if test="pTitle != null" >
+        p_title,
+      </if>
+      <if test="uNickname != null" >
+        u_nickname,
+      </if>
+      <if test="photo != null" >
+        photo,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="rCount != null" >
+        r_count,
+      </if>
+      <if test="category != null" >
+        category,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pId != null" >
+        #{pId,jdbcType=INTEGER},
+      </if>
+      <if test="pTitle != null" >
+        #{pTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="uNickname != null" >
+        #{uNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null" >
+        #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="rCount != null" >
+        #{rCount,jdbcType=BIGINT},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="getAllList" resultMap="ItermMap">
+
+    SELECT DISTINCT p_id, p_title, u_nickname,
+    photo, update_time, r_count,
+    category
+    FROM gf_post_iterm
+    ORDER BY STR_TO_DATE(update_time,"%Y-%m-%d %H:%i:%s") desc
+  </select>
+  <select id="getPateList" parameterType="java.lang.Integer" resultMap="ItermMap">
+
+    SELECT DISTINCT p_id, p_title, u_nickname,
+    photo, update_time, r_count,
+    category
+    FROM gf_post_iterm
+    WHERE category = #{category,jdbcType=INTEGER}
+    ORDER BY STR_TO_DATE(update_time,"%Y-%m-%d %H:%i:%s") desc
+  </select>
+  <select id="seachPostItermByTitle" resultMap="ItermMap" >
+    select DISTINCT p_id, p_title, u_nickname,
+    photo, update_time, r_count,
+    category
+    from gf_post_iterm
+    WHERE category = #{0} and p_title like concat(concat('%',#{1}),'%')
+    ORDER BY STR_TO_DATE(update_time,"%Y-%m-%d %H:%i:%s") desc
+  </select>
+</mapper>

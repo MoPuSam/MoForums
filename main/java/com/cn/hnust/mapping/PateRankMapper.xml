@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hnust.dao.IPateRankDao" >
+  <resultMap id="PateRankMap" type="com.cn.hnust.pojo.PateRank" >
+    <result column="p_id" property="pId" jdbcType="INTEGER" />
+    <result column="p_type" property="pType" jdbcType="VARCHAR" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+  </resultMap>
+  <insert id="insert" parameterType="com.cn.hnust.pojo.PateRank" >
+    insert into gf_pate_rank (p_id, p_type, num
+      )
+    values (#{pId,jdbcType=INTEGER}, #{pType,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.hnust.pojo.PateRank" >
+    insert into gf_pate_rank
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pId != null" >
+        p_id,
+      </if>
+      <if test="pType != null" >
+        p_type,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pId != null" >
+        #{pId,jdbcType=INTEGER},
+      </if>
+      <if test="pType != null" >
+        #{pType,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="getRankList" resultMap="PateRankMap" >
+    select
+    p_id, p_type, num
+    from gf_pate_rank
+  </select>
+</mapper>
